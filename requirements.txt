@@ -4,3 +4,4 @@ opencv-python==4.5.1
 numpy==1.19.45
 fastapi==0.63.0
 uvicorn[standard]
+python-multipart==0.0.5
