@@ -54,7 +54,7 @@ class LoadModel:
                 left = bbox[0] * height
                 right = bbox[3] * width
                 bottom = bbox[2] * height
-                crop_img = img[int(left-15):int(bottom+15), int(top-15):int(right+15)]
+                crop_img = image[int(left-15):int(bottom+15), int(top-15):int(right+15)]
                 image_crop_list.append(crop_img)
                 score_list.append(score)
         # Get image index in score max
