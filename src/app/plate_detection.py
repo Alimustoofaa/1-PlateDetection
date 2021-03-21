@@ -6,7 +6,7 @@
 import cv2
 import tensorflow as tf
 
-class LoadModel:
+class PlateDetection:
     '''
     Load models MobileSSD Net v2
     in directory models/frozen_inference_graph.pb
@@ -63,7 +63,7 @@ class LoadModel:
 
         return img_detection
 
-test = LoadModel()
-img = cv2.imread('photo6224513270086216528.jpg')
-results = test.predict(image=img)
-print(int(results[0][0]))
+# test = LoadModel()
+# img = cv2.imread('photo6224513270086216528.jpg')
+# results = test.predict(image=img)
+# print(int(results[0][0]))
