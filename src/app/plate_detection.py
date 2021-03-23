@@ -35,7 +35,7 @@ class PlateDetection:
                 feed_dict={'image_tensor:0': inp.reshape(1, inp.shape[0], inp.shape[1], 3)})
             return out
 
-    def filter_and_crop(self, image, prediction, min_score=0.3):
+    def filter_and_crop(self, image, prediction, min_score=None):
         '''
         Filter prediction based on minimum score ->
         and crop image based on maximum score
@@ -49,18 +49,22 @@ class PlateDetection:
             # class_id = int(prediction[3][0][i])
             score = float(prediction[1][0][i])
             bbox = [float(v) for v in prediction[2][0][i]]
-            if score > min_score:
-                top = bbox[1] * width
-                left = bbox[0] * height
-                right = bbox[3] * width
-                bottom = bbox[2] * height
+            top = bbox[1] * width
+            left = bbox[0] * height
+            right = bbox[3] * width
+            bottom = bbox[2] * height
+            if min_score:
+                if score > min_score: 
+                    crop_img = image[int(left-15):int(bottom+15), int(top-15):int(right+15)]
+                    image_crop_list.append(crop_img)
+                    score_list.append(score)
+            else:
                 crop_img = image[int(left-15):int(bottom+15), int(top-15):int(right+15)]
                 image_crop_list.append(crop_img)
                 score_list.append(score)
         # Get image index in score max
         score_hight = max(range(len(score_list)), key=score_list.__getitem__)
         img_detection = image_crop_list[score_hight]
-
         return img_detection
 
 # test = LoadModel()
