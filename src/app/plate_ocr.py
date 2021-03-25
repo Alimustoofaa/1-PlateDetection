@@ -15,7 +15,8 @@ class OpticalCharacterRecognition:
     def __init__(self):
         self.enggine = True if torch.cuda.is_available() else False
         self.list_langs = ['en', 'id']
-        self.reader = easyocr.Reader(self.list_langs, gpu=self.enggine)
+        self.recog_network = 'english_g2'
+        self.reader = easyocr.Reader(self.list_langs, gpu=self.enggine, recog_network=self.recog_network)
         
     def extract_text(self, bounds):
         '''
