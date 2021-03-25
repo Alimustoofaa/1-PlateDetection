@@ -3,8 +3,16 @@
 @Created on : 18 March 2021
 '''
 
+import os
 import cv2
+import requests
+from config import *
+from tqdm import tqdm
+from pathlib import Path
+from logging import getLogger
 import tensorflow as tf
+
+LOGGER = getLogger(__name__)
 
 class PlateDetection:
     '''
@@ -12,9 +20,32 @@ class PlateDetection:
     in directory models/frozen_inference_graph.pb
     '''
     def __init__(self):
-        self.file       = tf.io.gfile.GFile('models/frozen_inference_graph.pb', 'rb')
+        self.detection_path = os.path.join(DIRECTORY_MODEL, detection_model['filename'])
+        self.check_model()
+        self.file       = tf.io.gfile.GFile(self.detection_path, 'rb')
         self.graph_def  = tf.compat.v1.GraphDef()
         self.graph_def.ParseFromString(self.file.read())
+
+    def check_model(self):
+        '''
+        Checking model in path model/model_name.pb ->
+        download model when model in path not found.
+        '''
+        Path(DIRECTORY_MODEL).mkdir(parents=True, exist_ok=True)
+        if not os.path.isfile(self.detection_path):
+            LOGGER.warning('Downloading plate detection model, please wait.')
+            response = requests.get(detection_model['url'], stream=True)
+            progress = tqdm(response.iter_content(1024), 
+                        f'Downloading {detection_model["filename"]}', 
+                        total=detection_model['file_size'], unit='B', 
+                        unit_scale=True, unit_divisor=1024)
+            with open(self.detection_path, 'wb') as f:
+                for data in progress:
+                    f.write(data)
+                    progress.update(len(data))
+            LOGGER.warning('Done downloaded plate detection model.')
+        else:
+            LOGGER.warning('Load plate detection model.')
 
     def predict(self, image):
         '''
