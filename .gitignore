@@ -138,5 +138,4 @@ dmypy.json
 cython_debug/
 
 # models
-models/wpod-net.h5
-models/wpod-net.json
+models/
