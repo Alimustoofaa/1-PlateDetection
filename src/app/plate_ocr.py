@@ -55,7 +55,7 @@ class OpticalCharacterRecognition:
             mag_ratio       = config.mag_ratio
 
         )
-        return self.extract_text(results)
+        return results
 
 # test = OpticalCharacterRecognition()
 # image = cv2.imread('test.jpg')
