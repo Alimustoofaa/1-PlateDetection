@@ -27,6 +27,8 @@ class OpticalCharacterRecognition:
             text_conf.append([bound[1], bound[2]])
         return text_conf
     
+    def detect_char_in_image(self, image):
+        return self.reader.detect(image)
     
     def read_text_in_image(self, image, config):# image, item
         '''
