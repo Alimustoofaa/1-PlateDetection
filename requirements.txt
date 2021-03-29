@@ -1,7 +1,8 @@
+git+git://github.com/jaidedai/easyocr.git
 tensorflow==2.4.1
-Matplotlib==3.2.1
-opencv-python==4.5.1
-numpy==1.19.45
+Matplotlib
+opencv-python
+numpy==1.19.4
 fastapi==0.63.0
 uvicorn[standard]
 python-multipart==0.0.5
