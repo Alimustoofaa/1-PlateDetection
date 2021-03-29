@@ -1,11 +1,14 @@
 import cv2
+from fastapi import FastAPI, HTTPException
 
 from .schemas.easyocr import Methods
+from .app.filter_text import FilterText
 from .app.plate_ocr import OpticalCharacterRecognition
 from .app.plate_detection import PlateDetection
 
 prediction_plate = PlateDetection()
 ocr_plate = OpticalCharacterRecognition()
+pattren_plate = FilterText()
 
 def classification(img):
     pass
@@ -13,6 +16,9 @@ def classification(img):
 def plate_detection(image):
     predictions = prediction_plate.predict(image)
     return prediction_plate.filter_and_crop(image, predictions)
+
+def detection_char(image):
+    return ocr_plate.detect_char_in_image(image)
 
 def ocr(image):
     config = Methods(
@@ -36,8 +42,15 @@ def main_process(image):
     img_plate = plate_detection(image)
     if img_plate.shape[1] < 175:
         img_plate = resize(img_plate)
-    img = img_plate.copy()
+    detected_char =  detection_char(img_plate)
+    if detected_char[0]:
+        print('character found')
+    else:
+        print('character not found')
+
+    img = img_plate if detected_char[0] else image
     result_ocr = ocr(img)
     print(result_ocr)
-    return result_ocr
+    patrend = pattren_plate.result_ocr(result_ocr)
+    return patrend
 
