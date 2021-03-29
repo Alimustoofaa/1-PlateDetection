@@ -67,9 +67,15 @@ class FilterText:
                 break
             else:
                 try:
-                    find_key = self.area_code['wilayah'][i]
-                    plate_dict.update({'area_code' : i})
+                    if i[0].isnumeric:
+                        if int(i[0]) == 5:
+                            char = ['F', 1]
+                        elif int(i[0]) == 0:
+                            char = ['O', 1]
+                    find_key = self.area_code['wilayah'][char[0]]
+                    plate_dict.update({'area_code' : char})
                     plate_dict.update({'area_name' : find_key})
+                    text_conf.remove(i)
                     break
                 except ValueError:
                     break
