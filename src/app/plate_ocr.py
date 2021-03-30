@@ -50,7 +50,7 @@ class OpticalCharacterRecognition:
             contrast_ths    = config.contrast_ths,
             adjust_contrast = config.adjust_contrast,
             # Text detection
-            text_threshold  = config.text_threshold,
+            text_threshold  = config.text_threshold + 0.1 if self.enggine else config.text_threshold,
             low_text        = config.low_text,
             link_threshold  = config.link_threshold,
             canvas_size     = config.canvas_size,
