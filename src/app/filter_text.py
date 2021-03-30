@@ -96,11 +96,56 @@ class FilterText:
                 plate_dict.update({'unique_no' : i})
         return plate_dict
 
+    def extract_dict(self, plate_dict, text_conf):
+        '''
+        -> Get area code, no unique, back code in param plate_dict
+            if KeyError process with text_conf.
+        -> Marge result to variable license_plate
+        -> Calculate confidence level  
+        '''
+        conf_list = []
+        try:
+            area_code = plate_dict['area_code'][0]
+            conf_list.append( plate_dict['area_code'][1])
+        except KeyError:
+            area_code = [word for word,_ in text_conf][0]
+            conf_list.append([conf for _, conf in text_conf][0])
+
+        try:
+            no_unique = plate_dict['unique_no'][0]
+            conf_list.append(plate_dict['unique_no'][1])
+        except KeyError:
+            no_unique = [word for word,_ in text_conf][1]
+            conf_list.append([conf for _, conf in text_conf][1])
+
+        try:
+            back_code = plate_dict['back_code'][0]
+            conf_list.append(plate_dict['back_code'][1])
+        except KeyError:
+            back_code = [word for word,_ in text_conf][2]
+            conf_list.append([conf for _, conf in text_conf][2])
+        
+        try:
+            area_name = plate_dict['area_name']
+        except KeyError:
+            area_name = None
+
+        # Merge License Plate
+        license_plate = (f'{area_code} {no_unique} {back_code}')
+        confidence = round((sum(conf_list)/len(conf_list)), 2)
+        
+        respone_dict = {
+            'license_plate': license_plate,
+            'confidence': confidence,
+            'area_name': area_name,
+        }
+        return respone_dict
 
     def result_ocr(self, result):
         result.sort(reverse=False)
-        text_conf_list = [[i[1], i[2]] for i in result]
-        filtered_text = self.filter_text_conf(text_conf_list)
-        filtered_plate = self.filter_plate(filtered_text)
-        return filtered_plate
+        text_conf_list  = [[i[1], i[2]] for i in result]
+        filtered_text   = self.filter_text_conf(text_conf_list)
+        filtered_plate  = self.filter_plate(filtered_text)
+        responsed       = self.extract_dict(filtered_plate, filtered_text)
+        return responsed
 
