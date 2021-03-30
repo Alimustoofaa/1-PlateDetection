@@ -72,13 +72,19 @@ class FilterText:
                             char = ['F', 1]
                         elif int(i[0]) == 0:
                             char = ['O', 1]
-                    find_key = self.area_code['wilayah'][char[0]]
-                    plate_dict.update({'area_code' : char})
-                    plate_dict.update({'area_name' : find_key})
-                    text_conf.remove(i)
-                    break
+                    else:
+                        if i[0] == 'I':
+                            char = ['F', 1]
+                    try:
+                        find_key = self.area_code['wilayah'][char[0]]
+                        plate_dict.update({'area_code' : char})
+                        plate_dict.update({'area_name' : find_key})
+                        text_conf.remove(i)
+                        break
+                    except KeyError:
+                        pass
                 except ValueError:
-                    break
+                    pass
         
         # Get unique no and back code plate
         for i in text_conf:
