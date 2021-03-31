@@ -134,6 +134,8 @@ class FilterText:
             conf_list.append(plate_dict['back_code'][1])
         except KeyError:
             back_code = [word for word,_ in text_conf][2]
+            if len(back_code) > 3:
+                back_code = back_code[:3]
             conf_list.append([conf for _, conf in text_conf][2])
         
         try:
