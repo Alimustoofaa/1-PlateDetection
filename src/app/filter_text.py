@@ -94,7 +94,7 @@ class FilterText:
             if (len(i[0]) >= 1 and len(i[0]) <=3) or len([0]) == 3 or len([0]) == 2 and (i[0].isalnum() or i[0].isalpha()):
                 plate_dict.update({'back_code' : i})
                 len_back_code = len(i[0])
-            if len(i[0]) >= len_back_code and (i[0].isnumeric() and not i[0].isalpha()):
+            if len(i[0]) >= len_back_code and (i[0].isnumeric() and not i[0].isalpha()) and i[0][0] != '0':
                 plate_dict.update({'unique_no' : i})
         return plate_dict
 
@@ -118,6 +118,15 @@ class FilterText:
             conf_list.append(plate_dict['unique_no'][1])
         except KeyError:
             no_unique = [word for word,_ in text_conf][1]
+            # replacing str in word to str int
+            for char in no_unique:
+                if char == 'T':
+                    no_unique = no_unique.replace(char, '1')
+                elif char == 'I':
+                    no_unique = no_unique.replace(char, '1')
+                elif char == 'L':
+                    no_unique = no_unique.replace(char, '4')
+
             conf_list.append([conf for _, conf in text_conf][1])
 
         try:
