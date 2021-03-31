@@ -58,12 +58,13 @@ class FilterText:
         Get area code, no unique, back code in list
         '''
         plate_dict = dict()
+        area_code_list = list()
         # Get area code
         for i in text_conf:
             if i[0] in self.area_code['wilayah']:
                 plate_dict.update({'area_code' : i})
                 plate_dict.update({'area_name' : self.area_code['wilayah'][i[0]]})
-                text_conf.remove(i)
+                area_code_list.append(i)
                 break
             else:
                 try:
@@ -79,7 +80,7 @@ class FilterText:
                         find_key = self.area_code['wilayah'][char[0]]
                         plate_dict.update({'area_code' : char})
                         plate_dict.update({'area_name' : find_key})
-                        text_conf.remove(i)
+                        area_code_list.append(i)
                         break
                     except KeyError:
                         pass
@@ -87,12 +88,13 @@ class FilterText:
                     pass
         
         # Get unique no and back code plate
-        for i in text_conf:
+        new_text_conf = [elem for elem in text_conf if elem not in area_code_list]
+        for i in new_text_conf:
             len_back_code = 0
-            if len(i[0]) >= 1 and len(i[0]) <=3:
+            if (len(i[0]) >= 1 and len(i[0]) <=3) or len([0]) == 3 or len([0]) == 2 and (i[0].isalnum() or i[0].isalpha()):
                 plate_dict.update({'back_code' : i})
                 len_back_code = len(i[0])
-            if len(i[0]) > len_back_code or i[0].isnumeric() and i[0].isalpha():
+            if len(i[0]) >= len_back_code and (i[0].isnumeric() and not i[0].isalpha()):
                 plate_dict.update({'unique_no' : i})
         return plate_dict
 
