@@ -96,7 +96,8 @@ class PlateDetection:
         # Get image index in score max
         score_hight = max(range(len(score_list)), key=score_list.__getitem__)
         img_detection = image_crop_list[score_hight]
-        return img_detection
+        confidence = score_list[score_hight]
+        return img_detection, confidence
 
 # test = LoadModel()
 # img = cv2.imread('photo6224513270086216528.jpg')
