@@ -4,9 +4,9 @@ import requests
 from config import *
 from tqdm import tqdm
 from pathlib import Path
-from logging import getLogger
+import logging
 
-LOGGER = getLogger(__name__)
+LOGGER = logging.getLogger(__name__)
 
 class FilterText:
     '''
@@ -146,12 +146,14 @@ class FilterText:
         # Merge License Plate
         license_plate = (f'{area_code} {no_unique} {back_code}')
         confidence = round((sum(conf_list)/len(conf_list)), 2)
-        
         respone_dict = {
             'license_plate': license_plate,
             'confidence': confidence,
             'area_name': area_name,
         }
+        logging.info(f'Filtered Text Got Plate Number : {license_plate}')
+        logging.info(f'With Confidence Level : {confidence} %')
+        logging.info(f'With Area Name : {area_name}')
         return respone_dict
 
     def result_ocr(self, result):

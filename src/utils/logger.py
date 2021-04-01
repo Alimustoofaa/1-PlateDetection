@@ -30,5 +30,5 @@ class Logger(object):
     def logger(self):
         logging.Formatter.converter = self.formater_time_log
         logging.basicConfig(filename=self.path_log(), 
-                            level=logging.DEBUG, 
+                            level=logging.INFO, 
                             format=f'%(asctime)s | %(levelname)s : %(message)s')
