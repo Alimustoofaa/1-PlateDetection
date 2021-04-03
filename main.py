@@ -14,7 +14,6 @@ from PIL import Image
 import logging
 from src.utils.logger import *
 from src.process import main_process
-import src.process
 
 app = FastAPI(title='Lisence Plate Recognition',
               description='''Plate detection adn read text in image with open source
@@ -37,7 +36,3 @@ def input_image_for_predictions(file: bytes = File(...)):
     # cropped_predictions = prediction_plate.filter_and_crop(image, predictions)
     # cv2.imwrite('result.jpg', img)
     return {'prediction': 'got predictions', 'results': result}
-
-if __name__ == '__main__':
-    import uvicorn
-    uvicorn.run(app, host='0.0.0.0', port=8000)
