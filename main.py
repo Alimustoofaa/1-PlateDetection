@@ -37,3 +37,7 @@ def input_image_for_predictions(file: bytes = File(...)):
     # cropped_predictions = prediction_plate.filter_and_crop(image, predictions)
     # cv2.imwrite('result.jpg', img)
     return {'prediction': 'got predictions', 'results': result}
+
+if __name__ == '__main__':
+    import uvicorn
+    uvicorn.run(app, host='0.0.0.0', port=8000)

@@ -17,6 +17,7 @@ class Logger(object):
         self.month           = '0'+str(datetime_now.month) if len(str(datetime_now.month)) == 1 else str(datetime_now.month)
         self.day             = '0'+str(datetime_now.day) if len(str(datetime_now.day)) == 1 else str(datetime_now.day)
         self.hour            = '0'+str(datetime_now.hour) if len(str(datetime_now.hour)) == 1 else str(datetime_now.hour)
+        self.minute          = '0'+str(datetime_now.minute) if len(str(datetime_now.minute)) ==(str(datetime_now.minute)) == 1 else str(datetime_now.minute)
         # return year, month, day
     
     def formater_time_log(self, *args):
@@ -25,10 +26,15 @@ class Logger(object):
     def path_log(self):
         path = f'logger/{self.year}/{self.month}'
         Path(path).mkdir(parents=True, exist_ok=True)
-        return  f'{path}/logging_{self.hour}_{self.day}-{self.month}-{self.year}.log'
+        return  f'{path}/logging'
 
     def logger(self):
+        rfh = logging.handlers.TimedRotatingFileHandler(
+            filename = self.path_log(),
+            when='M'
+        )
+        rfh.suffix = "%H-%M-%S_%d-%m-%Y.log"
         logging.Formatter.converter = self.formater_time_log
-        logging.basicConfig(filename=self.path_log(), 
+        logging.basicConfig(handlers = [rfh],
                             level=logging.INFO, 
                             format=f'%(asctime)s | %(levelname)s : %(message)s')
